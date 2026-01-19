@@ -1,19 +1,3 @@
-function add(a, b){
-    let total = a+b;
-    return total; 
-};
-function subtract(a, b){
-    let total = a-b;
-    return total;
-};
-function multiply(a, b){
-    let total = a*b;
-    return total;
-};
-function divide(a, b){
-    let total = a/b;
-    return total;
-};
 
 // we automate the creation of the ten buttons for the numbers, and stick them in the numbersContainer
 let nmbsContainer = document.querySelector("#numbersContainer");
@@ -22,22 +6,151 @@ for (let n=0;n<10;n++){
     btnNumbers.className = "btnNumbers";
     btnNumbers.textContent = n;
     nmbsContainer.append(btnNumbers);
+    btnNumbers.addEventListener("click", getFNumber)
 }
+let addBtn = document.querySelector(`#add`);
+addBtn.addEventListener("click", getOperator);
+let subtractBtn = document.querySelector(`#subtract`);
+subtractBtn.addEventListener("click", getOperator);
+let multiplyBtn = document.querySelector(`#multiply`);
+multiplyBtn.addEventListener("click", getOperator);
+let divideBtn = document.querySelector(`#divide`);
+divideBtn.addEventListener("click", getOperator);
+let equalBtn = document.querySelector(`#equal`);
+equalBtn.addEventListener("click", getResult);
 
 // for these ones we must use the input of a user
+let fNumber = "";
 let operator = "";
-let fNumber = null;
-let sNumber = null;
+let sNumber = "";
+let result
+let fNumberIsPressed = false;
+let sNumberIsPressed = false;
+let operatorIsPressed = false;
+let equalIsPressed = false;
 
-function displayText(){
-    let display = document.querySelector("#display");
-    let text = document.createElement("h2");
-    text.id = "text"
-    text.textContent = "2 x 2";
-    display.append(text);
+let display = document.querySelector("#display");
+let textFNumber = document.createElement("h2");
+textFNumber.id = "textFNumber"
+let textSNumber = document.createElement("h2");
+textSNumber.id = "textSNumber"
+let textOperator = document.createElement("h2");
+textOperator.id = "textOperator"
+let textResult = document.createElement("h2");
+textResult.id = "textResult"
+display.append(textFNumber, textOperator, textSNumber, textResult);
+
+
+
+
+function getFNumber(){
+    fNumberIsPressed = true;
+    fNumberIsPressed = true;
+    fNumber += this.textContent;
+    console.log(fNumber);
+    fNumberIsPressed = false;
+    displayFNumber();
+    if (operatorIsPressed = true){
+        return;
+    }
 }
 
-function calculator (){
+function displayFNumber(){
+    textFNumber.textContent = fNumber;
 }
 
-displayText();
+function getOperator(){
+    eventManager(getFNumber, getSNumber);
+    operatorIsPressed = true;
+    operator = this.textContent;
+    console.log(operator);
+    operatorIsPressed = false;
+    displayOperator();
+    if (sNumberIsPressed = true){
+        return;
+    }
+}
+
+function displayOperator(){
+    textOperator.textContent = operator;
+}
+
+function getSNumber(){
+    sNumberIsPressed = true;
+    sNumber += this.textContent;
+    console.log(sNumber);
+    sNumberIsPressed = false;
+    displaySNumber();
+    if (equalIsPressed = true){
+        return;
+    }
+}
+
+function displaySNumber(){
+    textSNumber.textContent = sNumber;
+}
+
+function add(a, b){
+    a = parseInt(a);
+    b = parseInt(b);
+    return a + b; 
+}
+
+function subtract(a, b){
+    a = parseInt(a);
+    b = parseInt(b);
+    return a - b;
+}
+
+function multiply(a, b){
+    a = parseInt(a);
+    b = parseInt(b);
+    return a * b;
+}
+
+function divide(a, b){
+    a = parseInt(a);
+    b = parseInt(b);
+    return a / b;
+}
+
+
+function getResult(){
+    equalIsPressed = true;
+    eventManager(getSNumber, getFNumber);
+    if (operator === "+"){
+        result = add(fNumber, sNumber);
+    } else if (operator === "-"){
+        result = subtract(fNumber, sNumber);
+    } else if (operator === "x"){
+       result = multiply(fNumber, sNumber);
+    } else if (operator === ":"){
+        result = divide(fNumber, sNumber);
+    } 
+    displayTotal();
+    console.log(result); 
+    return result;
+} 
+
+function displayTotal(){
+    textResult.textContent = `= ${result}`;
+}
+
+function eventManager(eventToRemove, getNumberFunction){
+    let btnNumbers = document.querySelectorAll(".btnNumbers")
+    btnNumbers.forEach(btnNumber => {
+        btnNumber.removeEventListener("click", eventToRemove)
+        btnNumber.addEventListener("click", getNumberFunction)
+    });
+}
+
+function program(){
+    getFNumber();
+    if (operatorIsPressed === true){
+        getOperator();
+    } if (sNumberIsPressed === true){
+        getSNumber();
+    } if (equalIsPressed === true){
+        getResult();
+    }
+}
