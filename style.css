@@ -49,7 +49,7 @@ body {
     height: 80px;
 }
 
-#textFNumber, #textSNumber, #textOperator, #textEqual {
+#textFNumber, #textSNumber, #textOperator, #textResult {
     margin: 10px;
     font-size: 50px;
     border: 1px solid black;

@@ -24,10 +24,10 @@ let fNumber = "";
 let operator = "";
 let sNumber = "";
 let result
-let fNumberIsPressed = false;
-let sNumberIsPressed = false;
-let operatorIsPressed = false;
-let equalIsPressed = false;
+let fNumberIsActive = true;
+let sNumberIsActive = false;
+let operatorIsActive = false;
+let equalIsActive = false;
 
 let display = document.querySelector("#display");
 let textFNumber = document.createElement("h2");
@@ -44,14 +44,14 @@ display.append(textFNumber, textOperator, textSNumber, textResult);
 
 
 function getFNumber(){
-    fNumberIsPressed = true;
-    fNumberIsPressed = true;
-    fNumber += this.textContent;
-    console.log(fNumber);
-    fNumberIsPressed = false;
+    if (fNumberIsActive === true){ 
+        fNumber += this.textContent;
+        console.log(fNumber);
+        fNumberIsActive = false;
+    }
     displayFNumber();
-    if (operatorIsPressed = true){
-        return;
+    if (operatorIsActive === true){
+        fNumberIsActive = false;
     }
 }
 
@@ -60,14 +60,14 @@ function displayFNumber(){
 }
 
 function getOperator(){
-    eventManager(getFNumber, getSNumber);
-    operatorIsPressed = true;
-    operator = this.textContent;
-    console.log(operator);
-    operatorIsPressed = false;
-    displayOperator();
-    if (sNumberIsPressed = true){
-        return;
+    operatorIsActive = true;
+    if (operatorIsActive === true){
+        operator = this.textContent;
+        console.log(operator);
+        displayOperator();
+    }
+    if (sNumberIsActive === true){
+        operatorIsActive = false;
     }
 }
 
@@ -76,13 +76,14 @@ function displayOperator(){
 }
 
 function getSNumber(){
-    sNumberIsPressed = true;
-    sNumber += this.textContent;
-    console.log(sNumber);
-    sNumberIsPressed = false;
-    displaySNumber();
-    if (equalIsPressed = true){
-        return;
+    sNumberIsActive = true;
+    if (sNumberIsActive === true&& fNumberIsActive === false){
+        sNumber += this.textContent;
+        console.log(sNumber);
+        displaySNumber();
+}
+    if (equalIsActive === true){
+        sNumberIsActive = false;
     }
 }
 
@@ -116,8 +117,7 @@ function divide(a, b){
 
 
 function getResult(){
-    equalIsPressed = true;
-    eventManager(getSNumber, getFNumber);
+    equalIsActive = true;
     if (operator === "+"){
         result = add(fNumber, sNumber);
     } else if (operator === "-"){
@@ -142,15 +142,4 @@ function eventManager(eventToRemove, getNumberFunction){
         btnNumber.removeEventListener("click", eventToRemove)
         btnNumber.addEventListener("click", getNumberFunction)
     });
-}
-
-function program(){
-    getFNumber();
-    if (operatorIsPressed === true){
-        getOperator();
-    } if (sNumberIsPressed === true){
-        getSNumber();
-    } if (equalIsPressed === true){
-        getResult();
-    }
 }
