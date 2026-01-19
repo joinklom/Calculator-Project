@@ -1,5 +1,15 @@
 
+let fNumber = "";
+let operator = "";
+let sNumber = "";
+let result
+let fNumberIsActive = true;
+let sNumberIsActive = false;
+let operatorIsActive = false;
+let equalIsActive = false;
+
 // we automate the creation of the ten buttons for the numbers, and stick them in the numbersContainer
+// these react to user when he click on buttons
 let nmbsContainer = document.querySelector("#numbersContainer");
 for (let n=0;n<10;n++){
     let btnNumbers = document.createElement("button");
@@ -8,6 +18,7 @@ for (let n=0;n<10;n++){
     nmbsContainer.append(btnNumbers);
     btnNumbers.addEventListener("click", checkPhase)
 }
+let title = document.querySelector("#title");
 let addBtn = document.querySelector(`#add`);
 addBtn.addEventListener("click", getOperator);
 let subtractBtn = document.querySelector(`#subtract`);
@@ -21,15 +32,7 @@ equalBtn.addEventListener("click", getResult);
 let clearBtn = document.querySelector(`#clearAll`);
 clearBtn.addEventListener("click", clearAll);
 
-// these react to user when he click on buttons
-let fNumber = "";
-let operator = "";
-let sNumber = "";
-let result
-let fNumberIsActive = true;
-let sNumberIsActive = false;
-let operatorIsActive = false;
-let equalIsActive = false;
+
 
 let display = document.querySelector("#display");
 let textFNumber = document.createElement("h2");
@@ -53,61 +56,73 @@ function checkPhase(e){
     } else if (sNumberIsActive){
         getSNumber(e);
     }
-    /*
-    if (fNumberIsActive && !sNumberIsActive && !operatorIsActive){ 
-       return getFNumber(e);
-    } else if (sNumberIsActive && !fNumberIsActive){
-        return getSNumber(e);
-    }
-    */
-
 }
 
 function getFNumber(e){
-    fNumber += e.target.textContent;
-    console.log(fNumber);
-    textFNumber.textContent = fNumber;
+    if (equalIsActive){
+        equalIsActive = false
+        fNumber = result;
+        console.log(fNumber);
+        textFNumber.textContent = fNumber;
+    } else {
+        if (fNumberIsActive){
+            title.textContent = "";
+            fNumber += e.target.textContent;
+            console.log(fNumber);
+            textFNumber.textContent = fNumber;
+            operatorIsActive = true;
+        }
+    }
 }
 
-
 function getOperator(){
-    fNumberIsActive = false;
-    sNumberIsActive = true;
-    operator = this.textContent;
-    textOperator.textContent = operator;
-    /*
-    if (operatorIsActive && !fNumberIsActive && !sNumberIsActive){
+    if (equalIsActive || sNumberIsActive){
+        getResult();
+        sNumberIsActive = false;
+        clearText();
+        getFNumber();
+        fNumberIsActive = false;
+        sNumberIsActive = true;
+        sNumber = "";
+        textSNumber.textContent = sNumber;
         operator = this.textContent;
-        console.log(operator);
         textOperator.textContent = operator;
-    } sNumberIsActive = true;
-     */
+    } else {
+        if (operatorIsActive){
+            sNumberIsActive = true;
+            fNumberIsActive = false;
+            operator = this.textContent;
+            textOperator.textContent = operator;
+        }
+    }
 }
 
 function getSNumber(e){
-    operatorIsActive = false;
-    sNumber += e.target.textContent;
-    console.log(sNumber);
-    textSNumber.textContent = sNumber;
+    if (sNumberIsActive && !fNumberIsActive){
+        sNumber += e.target.textContent;
+        console.log(sNumber);
+        textSNumber.textContent = sNumber;
+        operatorIsActive = false;
+    }
 }
-
+// pressing equal symbol activates equal phase, 
 function getResult(){
-    sNumberIsActive = false;
-    operatorIsActive = false;
-    equalIsActive = true;
-    if (operator === "+"){
-        result = add(fNumber, sNumber);
-    } else if (operator === "-"){
-        result = subtract(fNumber, sNumber);
-    } else if (operator === "x"){
-       result = multiply(fNumber, sNumber);
-    } else if (operator === ":"){
-        result = divide(fNumber, sNumber);
-    } 
-    clearText();
-    textResult.textContent = result;
-    console.log(result); 
-    return result;
+    if (!fNumberIsActive){
+        equalIsActive = true;
+        if (operator === "+"){
+            result = add(fNumber, sNumber);
+        } else if (operator === "-"){
+            result = subtract(fNumber, sNumber);
+        } else if (operator === "x"){
+        result = multiply(fNumber, sNumber);
+        } else if (operator === ":"){
+            result = divide(fNumber, sNumber);
+        } 
+        clearText();
+        textResult.textContent = result;
+        console.log(result); 
+        return result;
+    }
 } 
 
 function add(a, b){
@@ -138,6 +153,7 @@ function divide(a, b){
 function clearAll(){
     clearText();
     clearVariables();
+    title.textContent = "Calculator"
 }
 
 function clearVariables(){
@@ -158,4 +174,3 @@ function clearText(){
         textArray[t].textContent = "";
     }
 }
-

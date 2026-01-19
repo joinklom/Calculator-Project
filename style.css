@@ -5,16 +5,19 @@ button {
 body {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    margin: 200px;
+    background-color: rgba(255, 60, 0, 0.514);
 }
 
 #calculatorContainer {
+    align-self: center;
     border: 3px solid rgba(1, 3, 0, 0.568);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
-    background-color: rgba(72, 109, 3, 0.753);
+    background-color: rgb(72, 109, 3);
     width: 420px;
+    height: 262px;
 }
 
 #buttonsContainer {
@@ -57,13 +60,13 @@ body {
     overflow: hidden;
 }
 
-#textFNumber, #textSNumber, #textOperator, #textResult {
+#textFNumber, #textSNumber, #textOperator, #textResult, #title{
+    font-family: 'MS Serif', sans-serif;
     display: flex;
     flex-direction: column;
     margin: 2px;
-    font-size: 20px;
     padding: 2px;;
     color: rgb(146, 209, 52);
     white-space: nowrap;
-    font-size: clamp(20px, 4vw, 28px);
+    font-size: clamp(50px, 4vw, 28px);
 }
