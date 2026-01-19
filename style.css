@@ -14,6 +14,7 @@ body {
     display: flex;
     flex-direction: column;
     background-color: rgba(72, 109, 3, 0.753);
+    width: 420px;
 }
 
 #buttonsContainer {
@@ -23,11 +24,15 @@ body {
     justify-content: space-around;
 }
 
-#add, #subtract, #multiply, #divide, #equal {
+#add, #subtract, #multiply, #divide, #equal, #clear{
     border-radius: 20px;
     background-color: rgba(245, 240, 240, 0.589);
     font-size: 30px;
     width: 50px;
+}
+
+#clear {
+    background-color: rgba(255, 166, 0, 0.849);
 }
 
 #numbersContainer {
@@ -42,16 +47,23 @@ body {
 
 #display {
     display: flex;
-    border: 30px solid rgb(63, 97, 1);
     border-radius: 11px;
-    padding: 40px;
+    padding: 30px;
     background-color: black;
-    height: 80px;
+    min-height: 60px;
+    margin: 2px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 #textFNumber, #textSNumber, #textOperator, #textResult {
-    margin: 10px;
-    font-size: 50px;
-    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    margin: 2px;
+    font-size: 20px;
+    padding: 2px;;
     color: rgb(146, 209, 52);
+    white-space: nowrap;
+    font-size: clamp(20px, 4vw, 28px);
 }

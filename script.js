@@ -6,7 +6,7 @@ for (let n=0;n<10;n++){
     btnNumbers.className = "btnNumbers";
     btnNumbers.textContent = n;
     nmbsContainer.append(btnNumbers);
-    btnNumbers.addEventListener("click", getFNumber)
+    btnNumbers.addEventListener("click", checkPhase)
 }
 let addBtn = document.querySelector(`#add`);
 addBtn.addEventListener("click", getOperator);
@@ -18,8 +18,10 @@ let divideBtn = document.querySelector(`#divide`);
 divideBtn.addEventListener("click", getOperator);
 let equalBtn = document.querySelector(`#equal`);
 equalBtn.addEventListener("click", getResult);
+let clearBtn = document.querySelector(`#clear`);
+clearBtn.addEventListener("click", clear);
 
-// for these ones we must use the input of a user
+// these react to user when he click on buttons
 let fNumber = "";
 let operator = "";
 let sNumber = "";
@@ -40,56 +42,59 @@ let textResult = document.createElement("h2");
 textResult.id = "textResult"
 display.append(textFNumber, textOperator, textSNumber, textResult);
 
+//*********************************************************************************************
 
-
-
-function getFNumber(){
-    if (fNumberIsActive === true){ 
-        fNumber += this.textContent;
-        console.log(fNumber);
-        fNumberIsActive = false;
-    }
-    displayFNumber();
-    if (operatorIsActive === true){
-        fNumberIsActive = false;
+function checkPhase(e){
+    if (fNumberIsActive && !sNumberIsActive && !operatorIsActive){ 
+       return getFNumber(e);
+    } else if (!fNumberIsActive && sNumberIsActive && !operatorIsActive){
+        return getSNumber(e);
     }
 }
 
-function displayFNumber(){
+function getFNumber(e){
+    fNumber += e.target.textContent;
+    console.log(fNumber);
     textFNumber.textContent = fNumber;
 }
 
+
 function getOperator(){
+    fNumberIsActive = false;
     operatorIsActive = true;
-    if (operatorIsActive === true){
+    if (operatorIsActive && !fNumberIsActive && !sNumberIsActive){
         operator = this.textContent;
         console.log(operator);
-        displayOperator();
-    }
-    if (sNumberIsActive === true){
+        textOperator.textContent = operator;
         operatorIsActive = false;
+        sNumberIsActive = true;
     }
 }
 
-function displayOperator(){
-    textOperator.textContent = operator;
-}
-
-function getSNumber(){
+function getSNumber(e){
+    operatorIsActive = false;
     sNumberIsActive = true;
-    if (sNumberIsActive === true&& fNumberIsActive === false){
-        sNumber += this.textContent;
-        console.log(sNumber);
-        displaySNumber();
-}
-    if (equalIsActive === true){
-        sNumberIsActive = false;
-    }
-}
-
-function displaySNumber(){
+    sNumber += e.target.textContent;
+    console.log(sNumber);
     textSNumber.textContent = sNumber;
 }
+
+function getResult(){
+    sNumberIsActive = false;
+    equalIsActive = true;
+    if (operator === "+"){
+        result = add(fNumber, sNumber);
+    } else if (operator === "-"){
+        result = subtract(fNumber, sNumber);
+    } else if (operator === "x"){
+       result = multiply(fNumber, sNumber);
+    } else if (operator === ":"){
+        result = divide(fNumber, sNumber);
+    } 
+    textResult.textContent = `= ${result}`;
+    console.log(result); 
+    return result;
+} 
 
 function add(a, b){
     a = parseInt(a);
@@ -116,26 +121,40 @@ function divide(a, b){
 }
 
 
-function getResult(){
-    equalIsActive = true;
-    if (operator === "+"){
-        result = add(fNumber, sNumber);
-    } else if (operator === "-"){
-        result = subtract(fNumber, sNumber);
-    } else if (operator === "x"){
-       result = multiply(fNumber, sNumber);
-    } else if (operator === ":"){
-        result = divide(fNumber, sNumber);
-    } 
-    displayTotal();
-    console.log(result); 
-    return result;
-} 
-
-function displayTotal(){
-    textResult.textContent = `= ${result}`;
+function clear(){
+    location.reload()
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 function eventManager(eventToRemove, getNumberFunction){
     let btnNumbers = document.querySelectorAll(".btnNumbers")
     btnNumbers.forEach(btnNumber => {
@@ -143,3 +162,16 @@ function eventManager(eventToRemove, getNumberFunction){
         btnNumber.addEventListener("click", getNumberFunction)
     });
 }
+function displayFNumber(){
+    textFNumber.textContent = fNumber;
+}
+function displayOperator(){
+    textOperator.textContent = operator;
+}
+function displaySNumber(){
+    textSNumber.textContent = sNumber;
+}
+function displayTotal(){
+    textResult.textContent = `= ${result}`;
+}
+*/
