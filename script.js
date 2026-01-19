@@ -54,6 +54,8 @@ display.append(textFNumber, textOperator, textSNumber, textResult);
 function checkPhase(e){
     if (fNumberIsActive){ 
         getFNumber(e);
+    } else if (equalIsActive){
+        getFNumber(e);
     } else if (sNumberIsActive){
         getSNumber(e);
     }
@@ -65,16 +67,16 @@ function getFNumber(e){
         fNumber = result;
         console.log(fNumber);
         textFNumber.textContent = fNumber;
-    } else if (!keepOperatingActive){
-        if (fNumberIsActive && !sNumberIsActive){
-            clearVariables();
-            clearText();
-            title.textContent = "";
-            fNumber += e.target.textContent;
-            console.log(fNumber);
-            textFNumber.textContent = fNumber;
-            operatorIsActive = true;
-        }
+    } else if (!keepOperatingActive && fNumberIsActive){
+        title.textContent = "";
+        fNumber += e.target.textContent;
+        console.log(fNumber);
+        textFNumber.textContent = fNumber;
+        operatorIsActive = true;
+    } else if (equalIsActive && !fNumberIsActive){
+        clearText();
+        clearVariables();
+        getFNumber(e);
     }
 }
 
@@ -126,7 +128,8 @@ function getResult(){
         clearText();
         textResult.textContent = result;
         sNumberIsActive = false;
-        fNumberIsActive = true;
+        fNumberIsActive = false;
+        console.log(fNumberIsActive, sNumberIsActive, operatorIsActive, equalIsActive)
         return result;
     }
 } 
