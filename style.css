@@ -24,14 +24,14 @@ body {
     justify-content: space-around;
 }
 
-#add, #subtract, #multiply, #divide, #equal, #clear{
+#add, #subtract, #multiply, #divide, #equal, #clearAll{
     border-radius: 20px;
     background-color: rgba(245, 240, 240, 0.589);
     font-size: 30px;
     width: 50px;
 }
 
-#clear {
+#clearAll {
     background-color: rgba(255, 166, 0, 0.849);
 }
 

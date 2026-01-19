@@ -18,8 +18,8 @@ let divideBtn = document.querySelector(`#divide`);
 divideBtn.addEventListener("click", getOperator);
 let equalBtn = document.querySelector(`#equal`);
 equalBtn.addEventListener("click", getResult);
-let clearBtn = document.querySelector(`#clear`);
-clearBtn.addEventListener("click", clear);
+let clearBtn = document.querySelector(`#clearAll`);
+clearBtn.addEventListener("click", clearAll);
 
 // these react to user when he click on buttons
 let fNumber = "";
@@ -34,10 +34,13 @@ let equalIsActive = false;
 let display = document.querySelector("#display");
 let textFNumber = document.createElement("h2");
 textFNumber.id = "textFNumber"
+textFNumber.className = "textClass"
 let textSNumber = document.createElement("h2");
 textSNumber.id = "textSNumber"
+textSNumber.className = "textClass"
 let textOperator = document.createElement("h2");
 textOperator.id = "textOperator"
+textOperator.className = "textClass"
 let textResult = document.createElement("h2");
 textResult.id = "textResult"
 display.append(textFNumber, textOperator, textSNumber, textResult);
@@ -45,11 +48,19 @@ display.append(textFNumber, textOperator, textSNumber, textResult);
 //*********************************************************************************************
 
 function checkPhase(e){
+    if (fNumberIsActive){ 
+        getFNumber(e);
+    } else if (sNumberIsActive){
+        getSNumber(e);
+    }
+    /*
     if (fNumberIsActive && !sNumberIsActive && !operatorIsActive){ 
        return getFNumber(e);
-    } else if (!fNumberIsActive && sNumberIsActive && !operatorIsActive){
+    } else if (sNumberIsActive && !fNumberIsActive){
         return getSNumber(e);
     }
+    */
+
 }
 
 function getFNumber(e){
@@ -61,19 +72,20 @@ function getFNumber(e){
 
 function getOperator(){
     fNumberIsActive = false;
-    operatorIsActive = true;
+    sNumberIsActive = true;
+    operator = this.textContent;
+    textOperator.textContent = operator;
+    /*
     if (operatorIsActive && !fNumberIsActive && !sNumberIsActive){
         operator = this.textContent;
         console.log(operator);
         textOperator.textContent = operator;
-        operatorIsActive = false;
-        sNumberIsActive = true;
-    }
+    } sNumberIsActive = true;
+     */
 }
 
 function getSNumber(e){
     operatorIsActive = false;
-    sNumberIsActive = true;
     sNumber += e.target.textContent;
     console.log(sNumber);
     textSNumber.textContent = sNumber;
@@ -81,6 +93,7 @@ function getSNumber(e){
 
 function getResult(){
     sNumberIsActive = false;
+    operatorIsActive = false;
     equalIsActive = true;
     if (operator === "+"){
         result = add(fNumber, sNumber);
@@ -91,7 +104,8 @@ function getResult(){
     } else if (operator === ":"){
         result = divide(fNumber, sNumber);
     } 
-    textResult.textContent = `= ${result}`;
+    clearText();
+    textResult.textContent = result;
     console.log(result); 
     return result;
 } 
@@ -119,59 +133,29 @@ function divide(a, b){
     b = parseInt(b);
     return a / b;
 }
-
-
-function clear(){
-    location.reload()
+//************************************************************************************************
+// cleaning functions: 
+function clearAll(){
+    clearText();
+    clearVariables();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-function eventManager(eventToRemove, getNumberFunction){
-    let btnNumbers = document.querySelectorAll(".btnNumbers")
-    btnNumbers.forEach(btnNumber => {
-        btnNumber.removeEventListener("click", eventToRemove)
-        btnNumber.addEventListener("click", getNumberFunction)
-    });
+function clearVariables(){
+    fNumber = "";
+    operator = "";
+    sNumber = "";
+    result = 0;
+    fNumberIsActive = true;
+    sNumberIsActive = false;
+    operatorIsActive = false;
+    equalIsActive = false;
 }
-function displayFNumber(){
-    textFNumber.textContent = fNumber;
+
+function clearText(){
+    let textArray = document.querySelectorAll(".textClass")
+    textResult.textContent = ""
+    for (let t=0; t<textArray.length; t++){
+        textArray[t].textContent = "";
+    }
 }
-function displayOperator(){
-    textOperator.textContent = operator;
-}
-function displaySNumber(){
-    textSNumber.textContent = sNumber;
-}
-function displayTotal(){
-    textResult.textContent = `= ${result}`;
-}
-*/
+
