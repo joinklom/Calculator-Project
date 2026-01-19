@@ -7,6 +7,7 @@ let fNumberIsActive = true;
 let sNumberIsActive = false;
 let operatorIsActive = false;
 let equalIsActive = false;
+let keepOperatingActive = false;
 
 // we automate the creation of the ten buttons for the numbers, and stick them in the numbersContainer
 // these react to user when he click on buttons
@@ -59,13 +60,15 @@ function checkPhase(e){
 }
 
 function getFNumber(e){
-    if (equalIsActive){
+    if (keepOperatingActive){
         equalIsActive = false
         fNumber = result;
         console.log(fNumber);
         textFNumber.textContent = fNumber;
-    } else {
-        if (fNumberIsActive){
+    } else if (!keepOperatingActive){
+        if (fNumberIsActive && !sNumberIsActive){
+            clearVariables();
+            clearText();
             title.textContent = "";
             fNumber += e.target.textContent;
             console.log(fNumber);
@@ -77,6 +80,7 @@ function getFNumber(e){
 
 function getOperator(){
     if (equalIsActive || sNumberIsActive){
+        keepOperatingActive = true
         getResult();
         sNumberIsActive = false;
         clearText();
@@ -87,6 +91,7 @@ function getOperator(){
         textSNumber.textContent = sNumber;
         operator = this.textContent;
         textOperator.textContent = operator;
+        keepOperatingActive = false;
     } else {
         if (operatorIsActive){
             sNumberIsActive = true;
@@ -120,7 +125,8 @@ function getResult(){
         } 
         clearText();
         textResult.textContent = result;
-        console.log(result); 
+        sNumberIsActive = false;
+        fNumberIsActive = true;
         return result;
     }
 } 
