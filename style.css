@@ -16,8 +16,8 @@ body {
     display: flex;
     flex-direction: column;
     background-color: rgb(72, 109, 3);
-    width: 420px;
-    height: 262px;
+    width: 450px;
+    height: 270px;
 }
 
 #buttonsContainer {
